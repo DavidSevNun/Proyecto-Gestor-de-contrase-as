@@ -3,6 +3,7 @@
 #include <conio.h>
 #include<windows.h>
 #include <string>
+#include <fstream>
 using namespace std;
 
 void gotoxy(int x,int y){
@@ -29,6 +30,8 @@ void Interfaz(){
 
 class Nodo{
     public:
+    string usuario;
+    string pswrdUsuario;
     string pswrd;
     Nodo *next;
 
@@ -41,7 +44,7 @@ class lista{
     Nodo *tail=nullptr;
 
 public:
-
+    void RegistrarUsuario();
     void Insertar(string);
     void modify();
 
@@ -50,7 +53,6 @@ public:
 };//--------CLASS LISTA
 
 void lista::mostrar(){
-
 Nodo *list;
 int i=1;
 
@@ -68,6 +70,26 @@ if(head!=nullptr){
 }cout<<"Lista vacia\n";
 
 }//-------------MOSTRAR LISTA------------
+
+void lista::RegistrarUsuario(){
+system("cls");
+Interfaz();
+ofstream file;
+string user,pswrd,txt;
+file.open("contrasenas.txt",fstream::out |fstream::app);
+
+    if(file.is_open()){
+        gotoxy(25,4); cout<<"Ingrese el nombre de usuario";
+        cin>>user;
+        gotoxy(25,6); cout<<"Ingrese su password";
+        cin>>pswrd;
+        txt = user + " " + pswrd;
+        file<<txt<<endl;
+        file.close();
+    }
+
+}
+
 
 
 void lista::Insertar(string contra){
@@ -135,7 +157,7 @@ int main(){
 system("cls");
 system("color 07");
 //gotoxy(30,5); imprimir en el centro de interfaz
-
+lista list;
 int opc;
 do{
 Interfaz();
@@ -150,7 +172,7 @@ gotoxy(30,6); cout<<"Opcion: [   ]"; gotoxy(40,6); cin>>opc;
 
     case 2:
 
-
+        list.RegistrarUsuario();
 
     break;
 
