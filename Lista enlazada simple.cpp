@@ -1,7 +1,7 @@
-#include<iostream>
-#include<cstdlib>
+#include <iostream>
+#include <cstdlib>
 #include <conio.h>
-#include<windows.h>
+#include <windows.h>
 #include <string>
 #include <fstream>
 using namespace std;
@@ -32,6 +32,7 @@ class Nodo{
     public:
     string usuario;
     string pswrdUsuario;
+    string sitio;
     string pswrd;
     Nodo *next;
 
@@ -47,6 +48,7 @@ public:
     void RegistrarUsuario();
     void Insertar(string);
     void modify();
+    void LogIn(string);
 
     void mostrar();
 
@@ -68,7 +70,6 @@ if(head!=nullptr){
     system("pause");
 
 }cout<<"Lista vacia\n";
-
 }//-------------MOSTRAR LISTA------------
 
 void lista::RegistrarUsuario(){
@@ -79,17 +80,48 @@ string user,pswrd,txt;
 file.open("contrasenas.txt",fstream::out |fstream::app);
 
     if(file.is_open()){
-        gotoxy(25,4); cout<<"Ingrese el nombre de usuario";
+
+        gotoxy(25,4); cout<<"Ingrese el nombre de usuario:";
         cin>>user;
-        gotoxy(25,6); cout<<"Ingrese su password";
+        gotoxy(25,6); cout<<"Ingrese su password:";
         cin>>pswrd;
         txt = user + " " + pswrd;
         file<<txt<<endl;
         file.close();
     }
-
+    menu();
 }
 
+void lista::LogIn(string datos){
+system("cls");
+Interfaz();
+ofstream file;
+string linea;
+file.open("contrasenas.txt",fstream::out |fstream::app);
+
+    if(file.is_open()){
+
+        while(!file.eof()){
+
+            while(getline(file,linea)){
+
+                if(linea == datos){
+
+                    gotoxy(25,4); cout<<"Sesion iniciada";
+                    menu();
+
+                }else{
+
+                    cout<<"No se encontro";
+
+                }
+            }
+        }
+
+        file.close();    
+
+    }
+}
 
 
 void lista::Insertar(string contra){
@@ -108,6 +140,7 @@ Nuevo->pswrd = contra;
         tail->next = Nuevo;
         Nuevo->next = nullptr;
         tail = Nuevo;
+
     }
     gotoxy(25,8); cout<<"Dato ingresado correctamente";
 };//-----------Insertar nodo
@@ -124,8 +157,7 @@ do{
     gotoxy(5,3); cout<<"\t\t           Ingrese una opcion";
     gotoxy(5,5); cout<<char(186);cout<<"\t[1]Ingresar password\t[2]Mostrar passwords\t[3]Salir";
     gotoxy(20,7); cout<<"Su opcion: ";
-
-cin>>opc;
+    cin>>opc;
 
     switch(opc){
 
@@ -136,6 +168,7 @@ cin>>opc;
         gotoxy(20,5); cout<<"Pswrd:________________________________";
         gotoxy(32,5);
         cin>>aux;
+        //encriptar, return pswrd encriptada y mandarla a insertar();
         list.Insertar(aux);
         system("pause");
     break;
@@ -159,6 +192,7 @@ system("color 07");
 //gotoxy(30,5); imprimir en el centro de interfaz
 lista list;
 int opc;
+string user, pswrd,txt;
 do{
 Interfaz();
 gotoxy(25,3); cout<<"[1]Log in\t[2]Sign in";
@@ -167,7 +201,13 @@ gotoxy(30,6); cout<<"Opcion: [   ]"; gotoxy(40,6); cin>>opc;
     switch(opc){
 
     case 1:
-        menu();
+        gotoxy(25,3); cout<<"Ingrese su usuario: ";
+        cin>>user;
+        gotoxy(25,5); cout<<"Ingrese su password: ";
+        cin>>pswrd;
+        txt = user + " " + pswrd;
+        list.LogIn(txt);
+
     break;
 
     case 2:
