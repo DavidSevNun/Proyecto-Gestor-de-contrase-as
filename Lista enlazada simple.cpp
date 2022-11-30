@@ -54,22 +54,63 @@ public:
 
 };//--------CLASS LISTA
 
+void menu(){
+system("cls");
+Interfaz();
+int opc;
+string aux;
+lista list;
+
+do{
+    gotoxy(5,3); cout<<"\t\t           Ingrese una opcion";
+    gotoxy(5,5); cout<<char(186);cout<<"\t[1]Ingresar password\t[2]Mostrar passwords\t[3]Salir";
+    gotoxy(20,7); cout<<"Su opcion: ";
+    cin>>opc;
+
+    switch(opc){
+
+    case 1:
+    system("cls");
+        Interfaz();
+        gotoxy(20,3); cout<<"Ingrese su password: \n"; //pedirle al usuario el sitio
+        gotoxy(20,5); cout<<"Pswrd:________________________________";
+        gotoxy(32,5);
+        cin>>aux;
+        //encriptar, return pswrd encriptada y mandarla a insertar();
+        list.Insertar(aux);
+        system("pause");
+    break;
+
+    case 2:
+    
+        system("cls");
+        list.mostrar();
+
+    break;
+    }
+
+}while(opc!=3);
+
+}
+
 void lista::mostrar(){
 Nodo *list;
 int i=1;
 
 list = head;
 
-if(head!=nullptr){
-    do{
+    if(head!=nullptr){
 
-        cout<<i<<".-"<<list->pswrd<<endl;
-        list = list->next;
-        i++;
-    }while(list!=nullptr);
-    system("pause");
+        do{
 
-}cout<<"Lista vacia\n";
+            cout<<i<<".-"<<list->sitio<<endl;
+            list = list->next;
+            i++;
+        }while(list!=nullptr);
+
+        system("pause");
+
+    }cout<<"Lista vacia\n";
 }//-------------MOSTRAR LISTA------------
 
 void lista::RegistrarUsuario(){
@@ -85,8 +126,8 @@ file.open("contrasenas.txt",fstream::out |fstream::app);
         cin>>user;
         gotoxy(25,6); cout<<"Ingrese su password:";
         cin>>pswrd;
-        txt = user + " " + pswrd;
-        file<<txt<<endl;
+        txt = user + " " + pswrd; //Ya creada la funcion de encriptado, mandarle desde aqui los datos y guardarlos en el txt
+        //file<<txt<<endl;
         file.close();
     }
     menu();
@@ -95,7 +136,7 @@ file.open("contrasenas.txt",fstream::out |fstream::app);
 void lista::LogIn(string datos){
 system("cls");
 Interfaz();
-ofstream file;
+ifstream file; 
 string linea;
 file.open("contrasenas.txt",fstream::out |fstream::app);
 
@@ -105,7 +146,7 @@ file.open("contrasenas.txt",fstream::out |fstream::app);
 
             while(getline(file,linea)){
 
-                if(linea == datos){
+                if(linea == datos){ //buscar dentro del txt.  datos es el usuario y contraseña ingresados
 
                     gotoxy(25,4); cout<<"Sesion iniciada";
                     menu();
@@ -117,9 +158,7 @@ file.open("contrasenas.txt",fstream::out |fstream::app);
                 }
             }
         }
-
-        file.close();    
-
+       file.close();    
     }
 }
 
@@ -146,43 +185,6 @@ Nuevo->pswrd = contra;
 };//-----------Insertar nodo
 
 
-void menu(){
-system("cls");
-Interfaz();
-int opc;
-string aux;
-lista list;
-
-do{
-    gotoxy(5,3); cout<<"\t\t           Ingrese una opcion";
-    gotoxy(5,5); cout<<char(186);cout<<"\t[1]Ingresar password\t[2]Mostrar passwords\t[3]Salir";
-    gotoxy(20,7); cout<<"Su opcion: ";
-    cin>>opc;
-
-    switch(opc){
-
-    case 1:
-    system("cls");
-        Interfaz();
-        gotoxy(20,3); cout<<"Ingrese su password: \n";
-        gotoxy(20,5); cout<<"Pswrd:________________________________";
-        gotoxy(32,5);
-        cin>>aux;
-        //encriptar, return pswrd encriptada y mandarla a insertar();
-        list.Insertar(aux);
-        system("pause");
-    break;
-
-    case 2:
-        system("cls");
-        list.mostrar();
-
-    break;
-    }
-
-}while(opc!=3);
-
-}
 
 
 
