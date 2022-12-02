@@ -54,6 +54,17 @@ public:
 
 };//--------CLASS LISTA
 
+// Encriptado y decriptado XOR
+string XOR(string dato){
+	char key = 'K';
+	string output = dato;
+	
+	for (int i= 0; i < dato.size(); i++)
+	 output[i] = dato[i] ^ key;
+	 
+	return output;
+}
+
 void menu(){
 system("cls");
 Interfaz();
@@ -76,7 +87,7 @@ do{
         gotoxy(20,5); cout<<"Pswrd:________________________________";
         gotoxy(32,5);
         cin>>aux;
-        //encriptar, return pswrd encriptada y mandarla a insertar();
+        aux = XOR(aux); // Encriptado
         list.Insertar(aux);
         system("pause");
     break;
@@ -125,8 +136,8 @@ file.open("contrasenas.txt",fstream::out |fstream::app);
         gotoxy(25,4); cout<<"Ingrese el nombre de usuario:";
         cin>>user;
         gotoxy(25,6); cout<<"Ingrese su password:";
-        cin>>pswrd;
-        txt = user + " " + pswrd; //Ya creada la funcion de encriptado, mandarle desde aqui los datos y guardarlos en el txt
+        pswrd = XOR(pswrd); 
+        txt = user + " " + pswrd; //Ya guardaria la contraseña encriptada
         //file<<txt<<endl;
         file.close();
     }
