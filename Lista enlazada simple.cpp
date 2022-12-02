@@ -86,17 +86,23 @@ string XOR(string dato){
 
 void menu(){
 int opc;
+char OPC[5];
+bool val = false;
 string aux,aux2,data;
 lista list;
 
 do{
-    system("cls");
-    Interfaz();        
-    gotoxy(5,3); cout<<"\t\t           Ingrese una opcion";
-    gotoxy(5,5); cout<<char(186);cout<<"[1]Ingresar password\t[2]Mostrar sitios\t[3]Modificar password";
-    gotoxy(65,8); cout<<"[4]Salir";
-    gotoxy(20,7); cout<<"Su opcion: ";
-    cin>>opc;
+    do{
+        system("cls");
+        Interfaz();        
+        gotoxy(5,3); cout<<"\t\t           Ingrese una opcion";
+        gotoxy(5,5); cout<<char(186);cout<<"[1]Ingresar password\t[2]Mostrar sitios\t[3]Modificar password";
+        gotoxy(65,8); cout<<"[4]Salir";
+        gotoxy(20,7); cout<<"Su opcion: ";
+        cin>>OPC;
+        val = validarNum(OPC);
+    }while(val == false);
+    opc = atoi(OPC);
 
     switch(opc){
 
@@ -150,8 +156,7 @@ do{
 
 void lista::modify(){
     system("cls");
-    string aux,linea;
-    ifstream file;
+    
     
 
         if(head==nullptr){
@@ -159,9 +164,11 @@ void lista::modify(){
             system("cls");
             Interfaz();
             gotoxy(25,6);    cout<<"Lista vacia";
+            system("pause");
 
         }else{
-
+            string aux,linea,txt;
+            ofstream file;
             Interfaz();
             gotoxy(5,3); cout<<"Ingrese el sitio: ";
             cin>>aux;
@@ -171,42 +178,46 @@ void lista::modify(){
                 aux[i] = toupper(aux[i]);//Convertir string a mayusculas
 
             }
+                Nodo *ptr = head;
+                do{
+                    if(ptr->sitio == aux){
+
+                        string pass,aux;
+                        system("cls");
+                        Interfaz();
+                        gotoxy(25,6);
+                        cout<<"Ingrese la nueva password:\n";
+                        cin>>pass;
+                        aux = XOR(pass);
+                        ptr->pswrd = aux;
+                    }  
+
+                    ptr = ptr->next;
+                }while(ptr!=nullptr);
+
+                Nodo *temp = head;
+                do{
+                    txt = temp->sitio + " " + temp->pswrd;
+                    temp = temp->next;
+                }while(temp !=nullptr);
+
+            file.open("contrasenas.txt",ios::out);
 
             if(file.is_open()){
 
-                 while(!file.eof()){
+                file<<txt<<endl;
 
-                    while(getline(file,linea)){
 
-                        if(linea == aux){ //buscar coincidencias dentro del txt. 
-
-                            Nodo *ptr = head;
-                              do{
-                                if(ptr->sitio == aux){
-
-                                    string pass;
-                                    system("cls");
-                                    Interfaz();
-                                    gotoxy(25,6);
-                                    cout<<"Ingrese la nueva password:\n";
-                                    cin>>pass;
-                                    ptr->pswrd = pass;
-
-                                    }  
-
-                                    ptr = ptr->next;
-                                }while(ptr!=nullptr);
-
-                            }else{
-                                system("cls");
-                                Interfaz();
-                                gotoxy(25,6);    cout<<"No se encontro el sitio";
-
-                            }
-                        }
-                    }
                 file.close();    
+                }else{
+                    
+                    system("cls");
+                    Interfaz();
+                    gotoxy(25,6);    cout<<"No se pudo abrir el archivo";
+                    system("pause");
+
                 }//IF file open
+
         }//IF vacia
 
     
@@ -216,9 +227,9 @@ void lista::modify(){
 void lista::mostrar(){
     system("cls");
     Interfaz(); 
-    gotoxy(15,2); cout<<"Sitios donde tiene passwords guardadas: ";
+    gotoxy(15,5); cout<<"Sitios donde tiene passwords guardadas: ";
 Nodo *list;
-int i=1;
+int i=1,x= 10,y=3;
 int cont = 0;
 list = head;
 
@@ -227,12 +238,14 @@ list = head;
         do{
                 if(cont==4){
 
-                    gotoxy(10,3); cout<<i<<".-"<<list->sitio<<endl;
+                    gotoxy(x,y); cout<<i<<".-"<<list->sitio<<endl;
+                    y+=2;
                     cont = 0;
 
                 }else{
 
-                    cout<<i<<".-"<<list->sitio<<"  ";
+                    gotoxy(x,y); cout<<i<<".-"<<list->sitio<<"  ";
+                    x+=5;
                     cont++;
                 }
             
@@ -347,7 +360,7 @@ Nuevo->pswrd = pass;
                 file<<data<<endl;//guardar datos en txt
 
             }
-    gotoxy(25,8); cout<<"Dato ingresado correctamente\n";
+    gotoxy(25,7); cout<<"Dato ingresado correctamente\n";
 };//----------------------------------------------------Insertar nodo
 
 
