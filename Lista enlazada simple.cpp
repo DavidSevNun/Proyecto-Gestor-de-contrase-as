@@ -69,6 +69,7 @@ public:
     void mostrar();
     void mostrarEspesif(string);
     void desencriptarLista();
+    void desencriptar();
 
 };//--------CLASS LISTA-------------------
 
@@ -76,12 +77,19 @@ public:
 string XOR(string dato){
 	char key = 'W';
 	string output = dato;
-	
 	for (int i= 0; i < dato.size(); i++)
 	 output[i] = dato[i] ^ key;
-	 
 	return output;
-}//-------------Encriptado y decriptado XOR-----------------
+}
+string DESXOR(string contraDesen){
+	char key = 'W';
+	string output = contraDesen;
+	for (int i= 0; i < contraDesen.size(); i++)
+    output[i] = contraDesen[i] ^ key;
+	return output;
+}
+
+//----------------------------
 
 //---------------------menu-----------
 void menu(){
@@ -146,25 +154,30 @@ do{
     }
 }while(opc!=6);
 }
+
 //----------desencriptar Lista-------------
 void lista::desencriptarLista(){
+system("cls");
 ifstream file; 
-string linea;
-gotoxy(6,8); system("pause");
-file.open("LogIn.txt",ios::in);
-    if(file.is_open()){
-        while(!file.eof()){
-            while(getline(file,linea)){
-                
-            }
-        }
-       file.close();    
-    }else{
-        system("cls");
-        Interfaz();
-        gotoxy(15,6); cout<<"No hay usuarios registrados...\n";
-        gotoxy(20,8); system("pause");
+string linea,texto,sitio,contraDesen;
+file.open("contrasenas.txt",ios::in);
+Interfaz();
+if (file.fail())
+    {
+        gotoxy(15,6); cout<<"No se abrieron las passwords"<<endl;
     }
+    else
+    {
+        while(file>>sitio>>contraDesen){
+            contraDesen = DESXOR(contraDesen);
+            DESXOR(contraDesen);
+            gotoxy(26,6); cout<<sitio<<" "<<contraDesen<<" "<<endl;
+            gotoxy(25,8); system("pause");
+            system("cls");
+            Interfaz();
+        }
+    }
+    file.close();
 }
 
 //----------mostrar password por sitio seleccionado-------------
