@@ -74,13 +74,13 @@ public:
 
 // Encriptado y decriptado XOR
 string XOR(string dato){
-	char key = 'K';
+	char key[3] = {'K', 'E', 'Y'};
 	string output = dato;
-	
-	for (int i= 0; i < dato.size(); i++)
-	 output[i] = dato[i] ^ key;
-	 
-	return output;
+	for (int i= 0; i < dato.size(); i++){
+        output[i] = dato[i] ^ key[i % (sizeof(key) / sizeof(char))];
+    }
+    return output;
+}
 }//------------------------------
 
 
